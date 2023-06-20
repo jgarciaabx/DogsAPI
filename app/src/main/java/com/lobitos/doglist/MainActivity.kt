@@ -11,6 +11,7 @@ import com.lobitos.doglist.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Locale
@@ -42,8 +43,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, OnQuer
             .baseUrl("https://dog.ceo/api/breed/")
             .addConverterFactory(
                 GsonConverterFactory.create())
+            .client(getClient())
             .build()
     }
+
+    private fun getClient():OkHttpClient=
+          OkHttpClient.Builder()
+            .addInterceptor(HeaderInterceptor())
+            .build()
 
 
     private fun searchByName(query: String){
